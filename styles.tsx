@@ -9,6 +9,7 @@ export const playAreaStyles = StyleService.create({
     subcontainer: {
         flexDirection: "column",
         alignItems: "center",
+        overflowX: "hidden",
     },
     row: {
         flexDirection: "row",
