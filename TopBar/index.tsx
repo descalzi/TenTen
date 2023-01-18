@@ -11,6 +11,7 @@ import { ThemeContext } from "../theme-context"
 import { useAtom } from "jotai"
 import { displayScoreAtom, displayScorePrevAtom } from "../Atoms"
 import AnimateNumber from "react-native-countup"
+import { View } from "react-native"
 
 const ThemeIcon = (props: IconProps) => {
     const themeContext = React.useContext(ThemeContext)
@@ -51,13 +52,11 @@ export const TopBar = () => {
     )
 
     return (
-        <Layout level="1">
-            <TopNavigation
-                alignment="center"
-                title="Ten-Ten"
-                accessoryLeft={topLeftActions}
-                accessoryRight={topRightActions}
-            />
-        </Layout>
+        <TopNavigation
+            alignment="center"
+            title="Ten-Ten"
+            accessoryLeft={topLeftActions}
+            accessoryRight={topRightActions}
+        />
     )
 }

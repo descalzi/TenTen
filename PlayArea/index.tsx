@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Pressable } from "react-native"
-import { Layout, useStyleSheet } from "@ui-kitten/components"
+import { useStyleSheet } from "@ui-kitten/components"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import {
     allSquaresAtom,
@@ -256,14 +256,15 @@ export const PlayArea = () => {
     }, [disableTracker])
 
     return (
-        <Layout style={playAreaStyles.container} level="1">
+        <View style={playAreaStyles.subcontainer}>
             <AllSquares />
             <ConfettiCannon
                 count={200}
-                origin={{ x: -10, y: 0 }}
+                origin={{ x: -20, y: 0 }}
                 autoStart={false}
+                fadeOut={true}
                 ref={confettiRef}
             />
-        </Layout>
+        </View>
     )
 }

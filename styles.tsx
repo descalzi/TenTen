@@ -2,11 +2,13 @@ import { StyleService } from "@ui-kitten/components"
 
 export const playAreaStyles = StyleService.create({
     container: {
+        flex: 1,
         flexDirection: "column",
-        flexWrap: "wrap",
+        alignItems: "stretch",
+    },
+    subcontainer: {
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
-        padding: 10,
     },
     row: {
         flexDirection: "row",
@@ -15,8 +17,8 @@ export const playAreaStyles = StyleService.create({
         flexDirection: "column",
     },
     square_base: {
-        width: "38px",
-        height: "38px",
+        width: "39px",
+        height: "39px",
         alignItems: "center",
         justifyContent: "center",
         borderWidth: 1,
