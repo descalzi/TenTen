@@ -1,5 +1,5 @@
-import {atom} from 'jotai'
-import { SquareDataType, COL_BASE, ROW_COL_BASE } from '../const'
+import { atom } from "jotai"
+import { SquareDataType, COL_BASE, ROW_COL_BASE } from "../const"
 
 export const activeRowAtom = atom<number>(0)
 export const activeColAtom = atom<number>(0)

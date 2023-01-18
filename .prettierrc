@@ -7,5 +7,6 @@
   "jsxBracketSameLine": true,
   "tabWidth": 4,
   "useTabs": false,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "prettier.trailingComma": "all"
 }
