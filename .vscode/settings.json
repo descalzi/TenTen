@@ -1,7 +1,15 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": false, // required 
+  "editor.formatOnPaste": false, // required
   "editor.formatOnType": false, // required
-  "editor.formatOnSave": true, // optional 
+  "editor.formatOnSave": true, // optional
   "editor.formatOnSaveMode": "file", // required to format on save
+  "editor.renderLineHighlight": "gutter",
+    "editor.rulers": [
+        100
+    ],
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
