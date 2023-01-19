@@ -9,8 +9,7 @@ import {
 } from "@ui-kitten/components"
 import { ThemeContext } from "../theme-context"
 import { useAtom } from "jotai"
-import { displayScoreAtom, displayScorePrevAtom } from "../Atoms"
-import AnimateNumber from "react-native-countup"
+import { displayScoreAtom } from "../Atoms"
 import { View } from "react-native"
 
 const ThemeIcon = (props: IconProps) => {
@@ -26,22 +25,11 @@ const AwardIcon = (props: IconProps) => {
 export const TopBar = () => {
     const themeContext = React.useContext(ThemeContext)
     const [displayScore, setDisplayScore] = useAtom(displayScoreAtom)
-    const [displayScorePrev, setDisplayScorePrev] = useAtom(displayScorePrevAtom)
-
-    // const ScoreCount = React.useMemo(() => {
-    //   return <AnimateNumber initial={displayScorePrev} value={displayScore} timing="easeIn" countBy={1}/>
-    // }, [displayScore])
 
     const topLeftActions = () => (
         <React.Fragment>
             <TopNavigationAction icon={AwardIcon} />
-            <Text>Score: </Text>
-            <AnimateNumber
-                initial={displayScorePrev}
-                value={displayScore}
-                timing="easeIn"
-                countBy={1}
-            />
+            <Text>`Score: ${displayScore}`</Text>
         </React.Fragment>
     )
 

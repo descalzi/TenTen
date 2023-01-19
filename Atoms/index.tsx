@@ -1,4 +1,5 @@
 import { atom } from "jotai"
+import { atomWithStorage } from "jotai/utils"
 import { SquareDataType, COL_BASE, ROW_COL_BASE } from "../const"
 
 export const activeRowAtom = atom<number>(0)
@@ -12,5 +13,5 @@ export const disableTrackerAtom = atom<SquareDataType[]>([])
 export const allSquaresAtom = atom<SquareDataType[]>([])
 // score
 export const sessionScoreAtom = atom<number>(0)
-export const displayScorePrevAtom = atom<number>(0)
 export const displayScoreAtom = atom<number>(0)
+export const highScoreAtom = atomWithStorage<number>("highScore", 0)

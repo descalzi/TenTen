@@ -1,10 +1,9 @@
 import React from "react"
 import { View, Pressable } from "react-native"
-import { useStyleSheet } from "@ui-kitten/components"
+import { useStyleSheet, Button } from "@ui-kitten/components"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import {
     allSquaresAtom,
-    displayScorePrevAtom,
     displayScoreAtom,
     disableTrackerAtom,
     sessionScoreAtom,
@@ -25,7 +24,6 @@ const SingleSquare = (props: SingleSquareProps) => {
     const [disableTracker, setDisableTracker] = useAtom(disableTrackerAtom)
     const [sessionScore, setSessionScore] = useAtom(sessionScoreAtom)
     const [displayScore, setDisplayScore] = useAtom(displayScoreAtom)
-    const [displayScorePrev, setDisplayScorePrev] = useAtom(displayScorePrevAtom)
 
     React.useEffect(() => {
         setIsActive(pressTracker.includes(props.data))
@@ -92,10 +90,9 @@ const SingleSquare = (props: SingleSquareProps) => {
 
     const increaseDisplayScore = React.useCallback(
         (addScore: number) => {
-            setDisplayScorePrev(displayScore)
             setDisplayScore((prev: number) => prev + addScore)
         },
-        [setSessionScore, displayScore]
+        [setDisplayScore]
     )
 
     const checkAndAction = React.useCallback(
@@ -115,7 +112,15 @@ const SingleSquare = (props: SingleSquareProps) => {
             addToTracker(data)
             increaseScore(data.value)
         },
-        [isPressAboveLimit, isPressFullScore, increaseScore, addToTracker, resetScore, pressTracker]
+        [
+            isPressAboveLimit,
+            isPressFullScore,
+            increaseScore,
+            addToTracker,
+            resetScore,
+            pressTracker,
+            sessionScore,
+        ]
     )
 
     const handlePress = React.useCallback(
