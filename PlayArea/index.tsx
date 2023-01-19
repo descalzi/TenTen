@@ -8,6 +8,7 @@ import {
     disableTrackerAtom,
     sessionScoreAtom,
     pressTrackerAtom,
+    highScoreAtom,
 } from "../Atoms"
 import { playAreaStyles } from "../styles"
 import { SquareDataType, PLAYAREA_COLS, PLAYAREA_ROWS } from "../const"
@@ -24,6 +25,7 @@ const SingleSquare = (props: SingleSquareProps) => {
     const [disableTracker, setDisableTracker] = useAtom(disableTrackerAtom)
     const [sessionScore, setSessionScore] = useAtom(sessionScoreAtom)
     const [displayScore, setDisplayScore] = useAtom(displayScoreAtom)
+    const [highScore, setHighScore] = useAtom(highScoreAtom)
 
     React.useEffect(() => {
         setIsActive(pressTracker.includes(props.data))
@@ -91,8 +93,9 @@ const SingleSquare = (props: SingleSquareProps) => {
     const increaseDisplayScore = React.useCallback(
         (addScore: number) => {
             setDisplayScore((prev: number) => prev + addScore)
+            if (displayScore + addScore > highScore) setHighScore(displayScore + addScore)
         },
-        [setDisplayScore]
+        [setDisplayScore, displayScore, highScore, setHighScore]
     )
 
     const checkAndAction = React.useCallback(

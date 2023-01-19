@@ -8,8 +8,8 @@ import {
     IconProps,
 } from "@ui-kitten/components"
 import { ThemeContext } from "../theme-context"
-import { useAtom } from "jotai"
-import { displayScoreAtom } from "../Atoms"
+import { useAtom, useAtomValue } from "jotai"
+import { displayScoreAtom, highScoreAtom } from "../Atoms"
 import { View } from "react-native"
 
 const ThemeIcon = (props: IconProps) => {
@@ -25,6 +25,7 @@ const AwardIcon = (props: IconProps) => {
 export const TopBar = () => {
     const themeContext = React.useContext(ThemeContext)
     const [displayScore, setDisplayScore] = useAtom(displayScoreAtom)
+    const highScore = useAtomValue(highScoreAtom)
 
     const topLeftActions = () => (
         <React.Fragment>
@@ -43,6 +44,7 @@ export const TopBar = () => {
         <TopNavigation
             alignment="center"
             title="Ten-Ten"
+            subtitle={`High-Score ${highScore}`}
             accessoryLeft={topLeftActions}
             accessoryRight={topRightActions}
         />
