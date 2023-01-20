@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Pressable } from "react-native"
-import { useStyleSheet, Button } from "@ui-kitten/components"
+import { useStyleSheet, Button, Modal, Text } from "@ui-kitten/components"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import {
     allSquaresAtom,
@@ -9,6 +9,7 @@ import {
     sessionScoreAtom,
     pressTrackerAtom,
     highScoreAtom,
+    resetGameFlagAtom,
 } from "../Atoms"
 import { playAreaStyles } from "../styles"
 import { SquareDataType, PLAYAREA_COLS, PLAYAREA_ROWS } from "../const"
@@ -218,6 +219,7 @@ const SquareRow = (props: SquareRowProps) => {
 }
 
 const AllSquares = () => {
+    const resetGameFlag = useAtomValue(resetGameFlagAtom)
     const AllRowsAndCols = React.useMemo(() => {
         return (
             <>
@@ -226,17 +228,38 @@ const AllSquares = () => {
                 })}
             </>
         )
-    }, [])
+    }, [resetGameFlag])
 
     return <View style={playAreaStyles.column}>{AllRowsAndCols}</View>
 }
 
 export const PlayArea = () => {
-    const disableTracker = useAtomValue(disableTrackerAtom)
     const [completedRow, setCompletedRow] = React.useState<number[]>([])
     const [completedCol, setCompletedCol] = React.useState<number[]>([])
+    const setPressTracker = useSetAtom(pressTrackerAtom)
+    const [disableTracker, setDisableTracker] = useAtom(disableTrackerAtom)
+    const setSessionScore = useSetAtom(sessionScoreAtom)
+    const setDisplayScore = useSetAtom(displayScoreAtom)
+    const [resetGameFlag, setResetGameFlag] = useAtom(resetGameFlagAtom)
+    const [modalRowVisible, setModalRowVisible] = React.useState<boolean>(false)
+    const [modalColVisible, setModalColVisible] = React.useState<boolean>(false)
 
     const confettiRef = React.useRef()
+
+    const resetGame = React.useCallback(() => {
+        setPressTracker([])
+        setDisableTracker([])
+        setSessionScore(0)
+        setDisplayScore(0)
+        setCompletedRow([])
+        setCompletedCol([])
+        console.log("Game reset")
+        setResetGameFlag(false)
+    }, [])
+
+    React.useEffect(() => {
+        if (resetGameFlag) resetGame()
+    }, [resetGameFlag, resetGame])
 
     React.useEffect(() => {
         if (!completedCol.length && !completedRow.length) return
@@ -252,13 +275,17 @@ export const PlayArea = () => {
                 !completedRow.includes(position + 1)
             ) {
                 setCompletedRow((prev: number[]) => prev.concat(position + 1))
+                setModalRowVisible(true)
+                setTimeout(() => setModalRowVisible(false), 1500)
             }
             if (
                 disableTracker.filter((square: SquareDataType) => square.col === position + 1)
                     .length === 10 &&
                 !completedRow.includes(position + 1)
             ) {
-                setCompletedRow((prev: number[]) => prev.concat(position + 1))
+                setCompletedCol((prev: number[]) => prev.concat(position + 1))
+                setModalColVisible(true)
+                setTimeout(() => setModalColVisible(false), 1500)
             }
         })
     }, [disableTracker])
@@ -266,8 +293,14 @@ export const PlayArea = () => {
     return (
         <View style={playAreaStyles.subcontainer}>
             <AllSquares />
+            <Modal visible={modalRowVisible}>
+                <Text category="h2">🥳 Row Completed 🥳</Text>
+            </Modal>
+            <Modal visible={modalColVisible}>
+                <Text category="h2">🥳 Column Completed 🥳</Text>
+            </Modal>
             <ConfettiCannon
-                count={200}
+                count={100}
                 origin={{ x: -20, y: 0 }}
                 autoStart={false}
                 fadeOut={true}
