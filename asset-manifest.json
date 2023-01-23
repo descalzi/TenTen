@@ -1,7 +1,7 @@
 {
   "files": {
-    "app.js": "/TenTen/static/js/app.e569fe7b.chunk.js",
-    "app.js.map": "/TenTen/static/js/app.e569fe7b.chunk.js.map",
+    "app.js": "/TenTen/static/js/app.1d977e10.chunk.js",
+    "app.js.map": "/TenTen/static/js/app.1d977e10.chunk.js.map",
     "runtime~app.js": "/TenTen/static/js/runtime~app.37bc5aa2.js",
     "runtime~app.js.map": "/TenTen/static/js/runtime~app.37bc5aa2.js.map",
     "static/js/2.6787aa26.chunk.js": "/TenTen/static/js/2.6787aa26.chunk.js",
@@ -17,6 +17,6 @@
   "entrypoints": [
     "static/js/runtime~app.37bc5aa2.js",
     "static/js/2.6787aa26.chunk.js",
-    "static/js/app.e569fe7b.chunk.js"
+    "static/js/app.1d977e10.chunk.js"
   ]
 }
