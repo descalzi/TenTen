@@ -337,7 +337,7 @@ export const PlayArea = () => {
                     <View style={playAreaStyles.modalView}>
                         <Text category="h3">
                             🥳
-                            {modalRowVisible && modalRowVisible
+                            {modalRowVisible && modalColVisible
                                 ? "Row & Column"
                                 : modalRowVisible
                                 ? "Row"
