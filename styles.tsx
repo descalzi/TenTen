@@ -7,9 +7,11 @@ export const playAreaStyles = StyleService.create({
         alignItems: "stretch",
     },
     subcontainer: {
+        flex: 1,
         flexDirection: "column",
         alignItems: "center",
         overflowX: "hidden",
+        paddingTop: 30,
     },
     modalContainer: {
         margin: 0,

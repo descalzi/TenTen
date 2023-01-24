@@ -14,7 +14,7 @@ import {
 } from "../Atoms"
 import { playAreaStyles } from "../styles"
 import { SquareDataType, PLAYAREA_COLS, PLAYAREA_ROWS } from "../const"
-import ConfettiCannon from "react-native-confetti-cannon"
+import Confetti from "react-native-confetti"
 
 interface SingleSquareProps {
     data: SquareDataType
@@ -206,7 +206,7 @@ const SquareRow = (props: SquareRowProps) => {
         allSquares.push(squareData)
     })
 
-    setAllSquares(allSquares)
+    setAllSquares((prev: SquareDataType[]) => prev.concat(allSquares))
 
     return (
         <View style={playAreaStyles.row}>
@@ -268,38 +268,41 @@ export const PlayArea = () => {
     React.useEffect(() => {
         if (!completedCol.length && !completedRow.length) return
         if (!confettiRef.current) return
-        confettiRef.current.start()
+        confettiRef.current.startConfetti()
     }, [completedCol, completedRow, confettiRef])
 
     React.useEffect(() => {
         if (disableTracker.length) {
             // Any matches still available ?
-            Array.from(Array(10).keys()).forEach((position: number) => {
+            let totalCombos = 0
+            Array.from(Array(PLAYAREA_ROWS).keys()).forEach((position: number) => {
                 const checkingRow = allSquares
                     .filter(
                         (square: SquareDataType) =>
                             square.row === position + 1 && !disableTracker.includes(square)
                     )
                     .map((square: SquareDataType) => square.value)
+                // console.log("CHECKING", checkingRow)
                 const remainingRowCombos = sumEquals(checkingRow, 10)
-                console.log("Remaining Row Combos", remainingRowCombos.length)
-                if (!remainingRowCombos.length) {
-                    setCompletedGame(true)
-                    return
-                }
+                // console.log("Remaining Row Combos", remainingRowCombos.length)
+                totalCombos += remainingRowCombos.length
+            })
+            Array.from(Array(PLAYAREA_COLS).keys()).forEach((position: number) => {
                 const checkingCol = allSquares
                     .filter(
                         (square: SquareDataType) =>
                             square.col === position + 1 && !disableTracker.includes(square)
                     )
                     .map((square: SquareDataType) => square.value)
-                const remainingColCombos = sumEquals(checkingRow, 10)
-                console.log("Remaining Col Combos", remainingColCombos.length)
-                if (!remainingColCombos.length) {
-                    setCompletedGame(true)
-                    return
-                }
+                // console.log("CHECKING", checkingCol)
+                const remainingColCombos = sumEquals(checkingCol, 10)
+                // console.log("Remaining Col Combos", remainingColCombos.length)
+                totalCombos += remainingColCombos.length
             })
+            if (!totalCombos) {
+                setCompletedGame(true)
+                return
+            }
         }
 
         Array.from(Array(10).keys()).forEach((position: number) => {
@@ -326,23 +329,13 @@ export const PlayArea = () => {
         })
     }, [allSquares, disableTracker, completedRow, completedCol])
 
-    // React.useEffect(() => {
-    //     Array.from(Array(1).keys()).forEach((position: number) => {
-    //         const checkingRow = allSquares
-    //             .filter((square: SquareDataType) => !disableTracker.includes(square))
-    //             .map((square: SquareDataType) => square.value)
-    //         console.info("CHECKING", checkingRow)
-    //         console.log("COMBO", sumEquals(checkingRow, 10))
-    //     })
-    // }, [allSquares, disableTracker])
-
     return (
         <View style={playAreaStyles.subcontainer}>
             <AllSquares />
             <Modal visible={modalRowVisible || modalColVisible}>
                 <Card disabled={true} style={playAreaStyles.modalContainer}>
                     <View style={playAreaStyles.modalView}>
-                        <Text category="h2">
+                        <Text category="h3">
                             🥳
                             {modalRowVisible && modalRowVisible
                                 ? "Row & Column"
@@ -364,13 +357,7 @@ export const PlayArea = () => {
                     <Button onPress={() => resetGame()}>Restart</Button>
                 </Card>
             </Modal>
-            <ConfettiCannon
-                count={100}
-                origin={{ x: -20, y: 0 }}
-                autoStart={false}
-                fadeOut={true}
-                ref={confettiRef}
-            />
+            <Confetti ref={confettiRef} confettiCount={50} duration={3000} />
         </View>
     )
 }
