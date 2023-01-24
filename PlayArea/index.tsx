@@ -276,11 +276,26 @@ export const PlayArea = () => {
             // Any matches still available ?
             Array.from(Array(10).keys()).forEach((position: number) => {
                 const checkingRow = allSquares
-                    .filter((square: SquareDataType) => !disableTracker.includes(square))
+                    .filter(
+                        (square: SquareDataType) =>
+                            square.row === position + 1 && !disableTracker.includes(square)
+                    )
                     .map((square: SquareDataType) => square.value)
-                const remainingCombos = sumEquals(checkingRow, 10)
-                console.log("Remaining Combos", remainingCombos.length)
-                if (!remainingCombos.length) {
+                const remainingRowCombos = sumEquals(checkingRow, 10)
+                console.log("Remaining Row Combos", remainingRowCombos.length)
+                if (!remainingRowCombos.length) {
+                    setCompletedGame(true)
+                    return
+                }
+                const checkingCol = allSquares
+                    .filter(
+                        (square: SquareDataType) =>
+                            square.col === position + 1 && !disableTracker.includes(square)
+                    )
+                    .map((square: SquareDataType) => square.value)
+                const remainingColCombos = sumEquals(checkingRow, 10)
+                console.log("Remaining Col Combos", remainingColCombos.length)
+                if (!remainingColCombos.length) {
                     setCompletedGame(true)
                     return
                 }
