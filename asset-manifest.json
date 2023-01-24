@@ -1,22 +1,22 @@
 {
   "files": {
-    "app.js": "/TenTen/static/js/app.0f33ac28.chunk.js",
-    "app.js.map": "/TenTen/static/js/app.0f33ac28.chunk.js.map",
+    "app.js": "/TenTen/static/js/app.84bd1cce.chunk.js",
+    "app.js.map": "/TenTen/static/js/app.84bd1cce.chunk.js.map",
     "runtime~app.js": "/TenTen/static/js/runtime~app.37bc5aa2.js",
     "runtime~app.js.map": "/TenTen/static/js/runtime~app.37bc5aa2.js.map",
-    "static/js/2.6787aa26.chunk.js": "/TenTen/static/js/2.6787aa26.chunk.js",
-    "static/js/2.6787aa26.chunk.js.map": "/TenTen/static/js/2.6787aa26.chunk.js.map",
+    "static/js/2.47380b50.chunk.js": "/TenTen/static/js/2.47380b50.chunk.js",
+    "static/js/2.47380b50.chunk.js.map": "/TenTen/static/js/2.47380b50.chunk.js.map",
     "favicon-16.png": "/TenTen/favicon-16.png",
     "favicon-32.png": "/TenTen/favicon-32.png",
     "favicon.ico": "/TenTen/favicon.ico",
     "index.html": "/TenTen/index.html",
     "manifest.json": "/TenTen/manifest.json",
     "serve.json": "/TenTen/serve.json",
-    "static/js/2.6787aa26.chunk.js.LICENSE.txt": "/TenTen/static/js/2.6787aa26.chunk.js.LICENSE.txt"
+    "static/js/2.47380b50.chunk.js.LICENSE.txt": "/TenTen/static/js/2.47380b50.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime~app.37bc5aa2.js",
-    "static/js/2.6787aa26.chunk.js",
-    "static/js/app.0f33ac28.chunk.js"
+    "static/js/2.47380b50.chunk.js",
+    "static/js/app.84bd1cce.chunk.js"
   ]
 }
