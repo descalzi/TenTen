@@ -1,16 +1,17 @@
 import React from "react"
 import {
-    Layout,
     TopNavigation,
     TopNavigationAction,
     Icon,
     Text,
     IconProps,
+    Button,
 } from "@ui-kitten/components"
+import { Modal, ModalContent, SlideAnimation } from "react-native-modals"
+import { View } from "react-native"
 import { ThemeContext } from "../theme-context"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { displayScoreAtom, highScoreAtom, resetGameFlagAtom } from "../Atoms"
-import { View } from "react-native"
 
 const ThemeIcon = (props: IconProps) => {
     const themeContext = React.useContext(ThemeContext)
@@ -40,12 +41,67 @@ export const TopBar = () => {
         </React.Fragment>
     )
 
-    const topRightActions = () => (
-        <React.Fragment>
-            <TopNavigationAction icon={ThemeIcon} onPress={themeContext.toggleTheme} />
-            <TopNavigationAction icon={ReloadIcon} onPress={() => setResetGameFlag(true)} />
-        </React.Fragment>
-    )
+    const topRightActions = () => {
+        const [showConfirmGameReset, setShowConfirmGameReset] = React.useState<boolean>(false)
+        return (
+            <React.Fragment>
+                <TopNavigationAction icon={ThemeIcon} onPress={themeContext.toggleTheme} />
+                <TopNavigationAction
+                    icon={ReloadIcon}
+                    onPress={() => setShowConfirmGameReset(true)}
+                />
+                <Modal
+                    visible={showConfirmGameReset}
+                    onTouchOutside={() => setShowConfirmGameReset(false)}
+                    modalAnimation={
+                        new SlideAnimation({
+                            slideFrom: "bottom",
+                        })
+                    }
+                >
+                    <ModalContent>
+                        <View
+                            style={{
+                                flexDirection: "column",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    marginBottom: 20,
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Text>Reset Game ?</Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Button
+                                    style={{ margin: 2 }}
+                                    onPress={() => setShowConfirmGameReset(false)}
+                                >
+                                    Nope
+                                </Button>
+                                <Button
+                                    style={{ margin: 2 }}
+                                    onPress={() => {
+                                        setResetGameFlag(true)
+                                        setShowConfirmGameReset(false)
+                                    }}
+                                >
+                                    Yeah!
+                                </Button>
+                            </View>
+                        </View>
+                    </ModalContent>
+                </Modal>
+            </React.Fragment>
+        )
+    }
 
     return (
         <TopNavigation

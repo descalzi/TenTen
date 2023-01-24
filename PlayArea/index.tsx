@@ -1,6 +1,7 @@
 import React from "react"
 import { View, Pressable } from "react-native"
-import { useStyleSheet, Button, Modal, Text, Card } from "@ui-kitten/components"
+import { useStyleSheet, Button, Text, Card } from "@ui-kitten/components"
+import { Modal, ModalContent, SlideAnimation } from "react-native-modals"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { sumEquals } from "../helpers"
 import {
@@ -332,7 +333,7 @@ export const PlayArea = () => {
     return (
         <View style={playAreaStyles.subcontainer}>
             <AllSquares />
-            <Modal visible={modalRowVisible || modalColVisible}>
+            {/* <Modal visible={modalRowVisible || modalColVisible}>
                 <Card disabled={true} style={playAreaStyles.modalContainer}>
                     <View style={playAreaStyles.modalView}>
                         <Text category="h3">
@@ -346,17 +347,81 @@ export const PlayArea = () => {
                         </Text>
                     </View>
                 </Card>
+            </Modal> */}
+
+            <Modal
+                visible={modalRowVisible || modalColVisible}
+                // onTouchOutside={() => setShowConfirmGameReset(false)}
+                modalAnimation={
+                    new SlideAnimation({
+                        slideFrom: "bottom",
+                    })
+                }
+            >
+                <ModalContent>
+                    <View
+                        style={{
+                            marginTop: 20,
+                            marginBottom: 20,
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Text>
+                            🥳{" "}
+                            {modalRowVisible && modalColVisible
+                                ? "Row & Column"
+                                : modalRowVisible
+                                ? "Row"
+                                : "Column"}{" "}
+                            Cleared 🥳
+                        </Text>
+                    </View>
+                </ModalContent>
             </Modal>
             <Modal
                 visible={completedGame}
-                backdropStyle={playAreaStyles.backdrop}
-                onBackdropPress={resetGame}
+                onTouchOutside={() => resetGame()}
+                modalAnimation={
+                    new SlideAnimation({
+                        slideFrom: "bottom",
+                    })
+                }
             >
-                <Card disabled={true}>
-                    <Text>Game over</Text>
-                    <Button onPress={() => resetGame()}>Restart</Button>
-                </Card>
+                <ModalContent>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                marginTop: 20,
+                                marginBottom: 20,
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text>Finito !! Well done</Text>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Button
+                                style={{ margin: 2 }}
+                                onPress={() => {
+                                    resetGame()
+                                }}
+                            >
+                                I want to try again
+                            </Button>
+                        </View>
+                    </View>
+                </ModalContent>
             </Modal>
+
             <Confetti ref={confettiRef} confettiCount={50} duration={3000} />
         </View>
     )
