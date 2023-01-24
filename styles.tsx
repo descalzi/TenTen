@@ -11,6 +11,17 @@ export const playAreaStyles = StyleService.create({
         alignItems: "center",
         overflowX: "hidden",
     },
+    modalContainer: {
+        margin: 0,
+        borderRadius: 15,
+        borderWidth: 1,
+    },
+    modalView: {
+        padding: 20,
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor: "color-primary-default",
+    },
     row: {
         flexDirection: "row",
     },
@@ -41,5 +52,8 @@ export const playAreaStyles = StyleService.create({
         backgroundColor: "color-basic-transparent-100",
         color: "color-basic-disabled",
         cursor: "default",
+    },
+    backdrop: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
 })

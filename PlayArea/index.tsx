@@ -1,7 +1,8 @@
 import React from "react"
 import { View, Pressable } from "react-native"
-import { useStyleSheet, Button, Modal, Text } from "@ui-kitten/components"
+import { useStyleSheet, Button, Modal, Text, Card } from "@ui-kitten/components"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { sumEquals } from "../helpers"
 import {
     allSquaresAtom,
     displayScoreAtom,
@@ -236,8 +237,10 @@ const AllSquares = () => {
 export const PlayArea = () => {
     const [completedRow, setCompletedRow] = React.useState<number[]>([])
     const [completedCol, setCompletedCol] = React.useState<number[]>([])
+    const [completedGame, setCompletedGame] = React.useState<boolean>(false)
     const setPressTracker = useSetAtom(pressTrackerAtom)
     const [disableTracker, setDisableTracker] = useAtom(disableTrackerAtom)
+    const allSquares = useAtomValue(allSquaresAtom)
     const setSessionScore = useSetAtom(sessionScoreAtom)
     const setDisplayScore = useSetAtom(displayScoreAtom)
     const [resetGameFlag, setResetGameFlag] = useAtom(resetGameFlagAtom)
@@ -255,6 +258,7 @@ export const PlayArea = () => {
         setCompletedCol([])
         console.log("Game reset")
         setResetGameFlag(false)
+        setCompletedGame(false)
     }, [])
 
     React.useEffect(() => {
@@ -268,7 +272,23 @@ export const PlayArea = () => {
     }, [completedCol, completedRow, confettiRef])
 
     React.useEffect(() => {
+        if (disableTracker.length) {
+            // Any matches still available ?
+            Array.from(Array(10).keys()).forEach((position: number) => {
+                const checkingRow = allSquares
+                    .filter((square: SquareDataType) => !disableTracker.includes(square))
+                    .map((square: SquareDataType) => square.value)
+                const remainingCombos = sumEquals(checkingRow, 10)
+                console.log("Remaining Combos", remainingCombos.length)
+                if (!remainingCombos.length) {
+                    setCompletedGame(true)
+                    return
+                }
+            })
+        }
+
         Array.from(Array(10).keys()).forEach((position: number) => {
+            // Row completed
             if (
                 disableTracker.filter((square: SquareDataType) => square.row === position + 1)
                     .length === 10 &&
@@ -278,26 +298,56 @@ export const PlayArea = () => {
                 setModalRowVisible(true)
                 setTimeout(() => setModalRowVisible(false), 1500)
             }
+            // Column completed
             if (
                 disableTracker.filter((square: SquareDataType) => square.col === position + 1)
                     .length === 10 &&
-                !completedRow.includes(position + 1)
+                !completedCol.includes(position + 1)
             ) {
                 setCompletedCol((prev: number[]) => prev.concat(position + 1))
                 setModalColVisible(true)
                 setTimeout(() => setModalColVisible(false), 1500)
             }
         })
-    }, [disableTracker])
+    }, [allSquares, disableTracker, completedRow, completedCol])
+
+    // React.useEffect(() => {
+    //     Array.from(Array(1).keys()).forEach((position: number) => {
+    //         const checkingRow = allSquares
+    //             .filter((square: SquareDataType) => !disableTracker.includes(square))
+    //             .map((square: SquareDataType) => square.value)
+    //         console.info("CHECKING", checkingRow)
+    //         console.log("COMBO", sumEquals(checkingRow, 10))
+    //     })
+    // }, [allSquares, disableTracker])
 
     return (
         <View style={playAreaStyles.subcontainer}>
             <AllSquares />
-            <Modal visible={modalRowVisible}>
-                <Text category="h2">🥳 Row Completed 🥳</Text>
+            <Modal visible={modalRowVisible || modalColVisible}>
+                <Card disabled={true} style={playAreaStyles.modalContainer}>
+                    <View style={playAreaStyles.modalView}>
+                        <Text category="h2">
+                            🥳
+                            {modalRowVisible && modalRowVisible
+                                ? "Row & Column"
+                                : modalRowVisible
+                                ? "Row"
+                                : "Column"}{" "}
+                            Completed 🥳
+                        </Text>
+                    </View>
+                </Card>
             </Modal>
-            <Modal visible={modalColVisible}>
-                <Text category="h2">🥳 Column Completed 🥳</Text>
+            <Modal
+                visible={completedGame}
+                backdropStyle={playAreaStyles.backdrop}
+                onBackdropPress={resetGame}
+            >
+                <Card disabled={true}>
+                    <Text>Game over</Text>
+                    <Button onPress={() => resetGame()}>Restart</Button>
+                </Card>
             </Modal>
             <ConfettiCannon
                 count={100}
