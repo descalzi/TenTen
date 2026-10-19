@@ -28,18 +28,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "build": {
-        "babel": {
-          "include": [
-            "@ui-kitten/components"
-          ]
-        }
-      }
+      "bundler": "metro",
+      "output": "single"
     },
     "extra": {
       "eas": {
         "projectId": "56d3f69e-8f15-4bee-b7d8-dd9baf4362e0"
       }
+    },
+    "experiments": {
+      "baseUrl": "/TenTen"
     }
   }
 }

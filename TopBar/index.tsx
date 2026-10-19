@@ -7,7 +7,7 @@ import {
     IconProps,
     Button,
 } from "@ui-kitten/components"
-import { Modal, ModalContent, SlideAnimation } from "react-native-modals"
+import { GameModal } from "../GameModal"
 import { View } from "react-native"
 import { ThemeContext } from "../theme-context"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
@@ -50,55 +50,48 @@ export const TopBar = () => {
                     icon={ReloadIcon}
                     onPress={() => setShowConfirmGameReset(true)}
                 />
-                <Modal
+                <GameModal
                     visible={showConfirmGameReset}
-                    onTouchOutside={() => setShowConfirmGameReset(false)}
-                    modalAnimation={
-                        new SlideAnimation({
-                            slideFrom: "bottom",
-                        })
-                    }
+                    onBackdropPress={() => setShowConfirmGameReset(false)}
                 >
-                    <ModalContent>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                        }}
+                    >
                         <View
                             style={{
-                                flexDirection: "column",
+                                marginBottom: 20,
+                                flexDirection: "row",
+                                justifyContent: "center",
                             }}
                         >
-                            <View
-                                style={{
-                                    marginBottom: 20,
-                                    flexDirection: "row",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Text>Reset Game ?</Text>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <Button
-                                    style={{ margin: 2 }}
-                                    onPress={() => setShowConfirmGameReset(false)}
-                                >
-                                    Nope
-                                </Button>
-                                <Button
-                                    style={{ margin: 2 }}
-                                    onPress={() => {
-                                        setResetGameFlag(true)
-                                        setShowConfirmGameReset(false)
-                                    }}
-                                >
-                                    Yeah!
-                                </Button>
-                            </View>
+                            <Text>Reset Game ?</Text>
                         </View>
-                    </ModalContent>
-                </Modal>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Button
+                                style={{ margin: 2 }}
+                                onPress={() => setShowConfirmGameReset(false)}
+                            >
+                                Nope
+                            </Button>
+                            <Button
+                                style={{ margin: 2 }}
+                                onPress={() => {
+                                    setResetGameFlag(true)
+                                    setShowConfirmGameReset(false)
+                                }}
+                            >
+                                Yeah!
+                            </Button>
+                        </View>
+                    </View>
+                </GameModal>
             </React.Fragment>
         )
     }

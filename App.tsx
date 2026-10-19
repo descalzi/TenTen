@@ -1,7 +1,6 @@
 import React from "react"
 import * as eva from "@eva-design/eva"
 import { ApplicationProvider, IconRegistry, Divider, Layout } from "@ui-kitten/components"
-import { ModalPortal } from "react-native-modals"
 import { EvaIconsPack } from "@ui-kitten/eva-icons"
 import { SafeAreaView } from "react-native"
 import { TopBar } from "./TopBar"
@@ -37,7 +36,6 @@ export default () => {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
                 <ApplicationProvider {...eva} theme={eva[theme]}>
                     <HomeScreen />
-                    <ModalPortal />
                 </ApplicationProvider>
             </ThemeContext.Provider>
         </>

@@ -1,7 +1,7 @@
 import React from "react"
 import { View, Pressable } from "react-native"
 import { useStyleSheet, Button, Text, Card } from "@ui-kitten/components"
-import { Modal, ModalContent, SlideAnimation } from "react-native-modals"
+import { GameModal } from "../GameModal"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { sumEquals } from "../helpers"
 import {
@@ -349,16 +349,32 @@ export const PlayArea = () => {
                 </Card>
             </Modal> */}
 
-            <Modal
-                visible={modalRowVisible || modalColVisible}
-                // onTouchOutside={() => setShowConfirmGameReset(false)}
-                modalAnimation={
-                    new SlideAnimation({
-                        slideFrom: "bottom",
-                    })
-                }
-            >
-                <ModalContent>
+            <GameModal visible={modalRowVisible || modalColVisible}>
+                <View
+                    style={{
+                        marginTop: 20,
+                        marginBottom: 20,
+                        justifyContent: "center",
+                    }}
+                >
+                    <Text>
+                        🥳{" "}
+                        {modalRowVisible && modalColVisible
+                            ? "Row & Column"
+                            : modalRowVisible
+                            ? "Row"
+                            : "Column"}{" "}
+                        Cleared 🥳
+                    </Text>
+                </View>
+            </GameModal>
+            <GameModal visible={completedGame} onBackdropPress={() => resetGame()}>
+                <View
+                    style={{
+                        flexDirection: "column",
+                        justifyContent: "center",
+                    }}
+                >
                     <View
                         style={{
                             marginTop: 20,
@@ -366,61 +382,25 @@ export const PlayArea = () => {
                             justifyContent: "center",
                         }}
                     >
-                        <Text>
-                            🥳{" "}
-                            {modalRowVisible && modalColVisible
-                                ? "Row & Column"
-                                : modalRowVisible
-                                ? "Row"
-                                : "Column"}{" "}
-                            Cleared 🥳
-                        </Text>
+                        <Text>Finito !! Well done</Text>
                     </View>
-                </ModalContent>
-            </Modal>
-            <Modal
-                visible={completedGame}
-                onTouchOutside={() => resetGame()}
-                modalAnimation={
-                    new SlideAnimation({
-                        slideFrom: "bottom",
-                    })
-                }
-            >
-                <ModalContent>
                     <View
                         style={{
-                            flexDirection: "column",
+                            flexDirection: "row",
                             justifyContent: "center",
                         }}
                     >
-                        <View
-                            style={{
-                                marginTop: 20,
-                                marginBottom: 20,
-                                justifyContent: "center",
+                        <Button
+                            style={{ margin: 2 }}
+                            onPress={() => {
+                                resetGame()
                             }}
                         >
-                            <Text>Finito !! Well done</Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Button
-                                style={{ margin: 2 }}
-                                onPress={() => {
-                                    resetGame()
-                                }}
-                            >
-                                I want to try again
-                            </Button>
-                        </View>
+                            I want to try again
+                        </Button>
                     </View>
-                </ModalContent>
-            </Modal>
+                </View>
+            </GameModal>
 
             <Confetti ref={confettiRef} confettiCount={50} duration={3000} />
         </View>
